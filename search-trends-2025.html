@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тренды Поисковых Запросов 2025: Обновленный Обзор</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Outfit', sans-serif; /* Changed to Outfit */
+            background-color: #F4F7F6; /* Very light, slightly cool gray/green tint */
+            color: #2D3748; /* Darker text for body */
+        }
+        .content-section {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .content-section.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Subtle shadow for buttons */
+        }
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .nav-button.active-nav {
+            background-color: #4F8A8B; /* Sophisticated teal accent */
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px; /* Slightly wider chart */
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px; /* Increased base height */
+            max-height: 500px; /* Max height */
+            padding: 1.5rem; /* Padding inside container */
+            border-radius: 0.75rem; /* Rounded corners */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* More pronounced shadow */
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+        h1, h2, h3 {
+            color: #1A202C; /* Darker text for headings */
+        }
+        .accent-color {
+            color: #4F8A8B; /* Sophisticated teal accent for main branding */
+        }
+        .section-heading-border {
+            border-color: #C9E2DA; /* Light, subtle greenish-blue for borders */
+        }
+        .content-block {
+            background-color: #FFFFFF;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .content-block:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+        }
+        .summary-output {
+            background-color: #EAF4F4; /* Very light teal for summary */
+            border-color: #CCE3E3; /* Medium teal border */
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-top: 1rem;
+            color: #2F5C5B; /* Dark teal text */
+        }
+        .ideas-output {
+            background-color: #F0FFF0; /* Very light green for ideas */
+            border-color: #D9E9D9; /* Medium green border */
+            border-radius: 0.5rem;
+            padding: 1rem;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-top: 1rem;
+            color: #4CAF50; /* A good green text */
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #4F8A8B; /* Spinner color matching accent */
+            animation: spin 1s ease-in-out infinite;
+            -webkit-animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { -webkit-transform: rotate(360deg); }
+        }
+        @-webkit-keyframes spin {
+            to { -webkit-transform: rotate(360deg); }
+        }
+        .generate-summary-btn {
+            background-color: #4A90E2; /* Classic blue for summary button */
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .generate-summary-btn:hover {
+            background-color: #357ABD; /* Darker blue on hover */
+            transform: scale(1.05);
+        }
+        .generate-ideas-btn {
+            background-color: #6BBF5E; /* Fresh green for ideas button */
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .generate-ideas-btn:hover {
+            background-color: #5AA34D; /* Darker green on hover */
+            transform: scale(1.05);
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-6xl">
+        <header class="text-center mb-12 py-8 bg-white rounded-xl shadow-lg">
+            <h1 class="text-4xl md:text-6xl font-extrabold mb-4 text-gray-900">
+                Тренды Поисковых Запросов <span class="accent-color">2025</span>
+            </h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                Погрузитесь в интерактивный обзор ключевых тенденций, формирующих онлайн-поиск в этом году, от влияния ИИ до самых актуальных тем.
+            </p>
+        </header>
+
+        <nav class="flex flex-wrap justify-center gap-4 mb-12">
+            <button data-target="general" class="nav-button active-nav bg-white hover:bg-gray-100 text-gray-700 font-semibold py-3 px-6 rounded-full text-lg">Общие Тенденции</button>
+            <button data-target="topics" class="nav-button bg-white hover:bg-gray-100 text-gray-700 font-semibold py-3 px-6 rounded-full text-lg">Актуальные Темы</button>
+            <button data-target="chart" class="nav-button bg-white hover:bg-gray-100 text-gray-700 font-semibold py-3 px-6 rounded-full text-lg">Иллюстративная Диаграмма</button>
+        </nav>
+
+        <main>
+            <section id="general" class="content-section active space-y-10">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-900 border-b-2 section-heading-border pb-4 text-center">
+                    Общие Тенденции Поиска в 2025 Году
+                </h2>
+                <p class="text-lg text-gray-700 leading-relaxed text-center max-w-3xl mx-auto mb-8">
+                    В 2025 году поиск продолжает эволюционировать под влиянием технологий и меняющихся потребностей пользователей. Ключевые направления включают более глубокую интеграцию искусственного интеллекта, развитие мультимодального поиска и устойчивый интерес к темам экологии и здоровья.
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="content-block">
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-800">Искусственный Интеллект (ИИ) в Поиске</h3>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Пользователи все активнее ищут ИИ-инструменты и информацию, сгенерированную или обобщенную ИИ. Поисковые системы становятся более диалоговыми, предлагая ответы и решения, а не просто ссылки.</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4 mb-4">
+                            <li>**Примеры запросов:**
+                                <ul class="list-disc list-inside ml-6">
+                                    <li>"что такое Gemini AI"</li>
+                                    <li>"лучшие нейросети для дизайна логотипа"</li>
+                                    <li>"как работает поиск с искусственным интеллектом"</li>
+                                    <li>"создать текст с помощью ИИ"</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <button class="generate-summary-btn mt-4 text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-300 transform hover:scale-105" data-trend="Искусственный Интеллект (ИИ) в Поиске">Краткое изложение тренда ✨</button>
+                        <div class="summary-output hidden"></div>
+                    </div>
+
+                    <div class="content-block">
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-800">Мультимодальный Поиск</h3>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Растет тенденция использования комбинаций текста, изображений и голоса для поиска информации. Это позволяет пользователям формулировать запросы более естественным и интуитивным способом.</p>
+                         <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4 mb-4">
+                            <li>**Примеры концептуальных запросов:**
+                                <ul class="list-disc list-inside ml-6">
+                                    <li>"найди похожие товары по этой фотографии"</li>
+                                    <li>"голосовой поиск рецепта пиццы с грибами"</li>
+                                    <li>"что это за здание (с фото)"</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <button class="generate-summary-btn mt-4 text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-300 transform hover:scale-105" data-trend="Мультимодальный Поиск">Краткое изложение тренда ✨</button>
+                        <div class="summary-output hidden"></div>
+                    </div>
+
+                    <div class="content-block">
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-800">Устойчивое Развитие и Экология</h3>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Сохраняется высокий интерес к экологически чистым продуктам, технологиям устойчивого развития и информации об изменении климата. Люди ищут способы сделать свой образ жизни более ответственным.</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4 mb-4">
+                            <li>**Примеры запросов:**
+                                <ul class="list-disc list-inside ml-6">
+                                    <li>"экологичные бренды одежды 2025"</li>
+                                    <li>"как сократить углеродный след"</li>
+                                    <li>"новости изменения климата последние"</li>
+                                    <li>"переработка пластика в домашних условиях"</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <button class="generate-summary-btn mt-4 text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-300 transform hover:scale-105" data-trend="Устойчивое Развитие и Экология">Краткое изложение тренда ✨</button>
+                        <div class="summary-output hidden"></div>
+                    </div>
+
+                     <div class="content-block">
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-800">Здоровье и Благополучие</h3>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Тема здоровья, как физического, так и ментального, остается в центре внимания. Пользователи ищут информацию о здоровом питании, фитнесе, методах борьбы со стрессом и медицинских консультациях.</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4 mb-4">
+                            <li>**Примеры запросов:**
+                                <ul class="list-disc list-inside ml-6">
+                                    <li>"упражнения для снятия стресса"</li>
+                                    <li>"рецепты веганских блюд на неделю"</li>
+                                    <li>"лучшие приложения для медитации 2025"</li>
+                                    <li>"онлайн консультация врача"</li>
+                                </ul>
+                            </li>
+                        </ul>
+                        <button class="generate-summary-btn mt-4 text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-300 transform hover:scale-105" data-trend="Здоровье и Благополучие">Краткое изложение тренда ✨</button>
+                        <div class="summary-output hidden"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="topics" class="content-section space-y-10">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-900 border-b-2 section-heading-border pb-4 text-center">
+                    Актуальные Темы и События
+                </h2>
+                <p class="text-lg text-gray-700 leading-relaxed text-center max-w-3xl mx-auto mb-8">
+                    Этот раздел основан на тенденциях, наблюдавшихся в конце 2024 года и продолжающихся в 2025 году, и отражает широкий спектр интересов пользователей – от новостей и развлечений до спорта и стиля жизни.
+                </p>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="content-block">
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-800">Новости и Общество</h3>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Крупные мировые и местные события, политическая обстановка, социальные вопросы.</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4 mb-4">
+                            <li>"главные новости дня [текущая дата]"</li>
+                            <li>"итоги выборов [страна/регион] 2025"</li>
+                            <li>"экономический прогноз 2025"</li>
+                        </ul>
+                        <div class="mt-6">
+                            <input type="text" placeholder="Уточните тему (например, 'политика')" class="content-idea-input w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 mb-3 text-gray-700 bg-gray-50">
+                            <button class="generate-ideas-btn text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-300 transform hover:scale-105" data-category="Новости и Общество">Генератор идей для контента ✨</button>
+                            <div class="ideas-output hidden"></div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-800">Персоны</h3>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Общественные деятели, политики, знаменитости, эксперты в различных областях.</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4 mb-4">
+                            <li>"[имя известного политика] последние заявления"</li>
+                            <li>"интервью с [популярный ученый/артист]"</li>
+                            <li>"новые проекты [имя знаменитости]"</li>
+                        </ul>
+                        <div class="mt-6">
+                            <input type="text" placeholder="Уточните тему (например, 'актеры')" class="content-idea-input w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 mb-3 text-gray-700 bg-gray-50">
+                            <button class="generate-ideas-btn text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-300 transform hover:scale-105" data-category="Персоны">Генератор идей для контента ✨</button>
+                            <div class="ideas-output hidden"></div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-800">Развлечения: Фильмы, Музыка, Игры</h3>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Новинки кинопроката, музыкальные релизы, популярные видеоигры и связанные с ними события.</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4 mb-4">
+                            <li>"самые ожидаемые фильмы 2025 трейлеры"</li>
+                            <li>"[название группы/исполнителя] новый альбом слушать"</li>
+                            <li>"обзор игры [название игры] 2025"</li>
+                            <li>"лучшие сериалы года по версии зрителей"</li>
+                        </ul>
+                        <div class="mt-6">
+                            <input type="text" placeholder="Уточните тему (например, 'игры')" class="content-idea-input w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 mb-3 text-gray-700 bg-gray-50">
+                            <button class="generate-ideas-btn text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-300 transform hover:scale-105" data-category="Развлечения: Фильмы, Музыка, Игры">Генератор идей для контента ✨</button>
+                            <div class="ideas-output hidden"></div>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <h3 class="text-2xl font-semibold mb-4 text-gray-800">Спорт</h3>
+                        <p class="text-gray-600 mb-4 leading-relaxed">Крупные спортивные соревнования, достижения атлетов, новости спортивных клубов.</p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4 mb-4">
+                            <li>"чемпионат мира по [вид спорта] 2025 расписание"</li>
+                            <li>"результаты матча [команда1] против [команда2]"</li>
+                            <li>"Олимпийские игры подготовка"</li>
+                        </ul>
+                        <div class="mt-6">
+                            <input type="text" placeholder="Уточните тему (например, 'футбол')" class="content-idea-input w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 mb-3 text-gray-700 bg-gray-50">
+                            <button class="generate-ideas-btn text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-300 transform hover:scale-105" data-category="Спорт">Генератор идей для контента ✨</button>
+                            <div class="ideas-output hidden"></div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="content-block mt-8 mx-auto max-w-2xl">
+                    <h3 class="text-2xl font-semibold mb-4 text-gray-800">Стиль Жизни и Хобби</h3>
+                    <p class="text-gray-600 mb-4 leading-relaxed">Кулинария, путешествия, мода, дизайн интерьера, рукоделие и другие увлечения.</p>
+                    <ul class="list-disc list-inside text-gray-600 space-y-1 ml-4 mb-4">
+                        <li>"простые рецепты ужинов на каждый день"</li>
+                        <li>"куда поехать в отпуск 2025 недорого"</li>
+                        <li>"модные тренды весна-лето 2025"</li>
+                        <li>"идеи для маленькой квартиры дизайн"</li>
+                        <li>"макияж в стиле 'Aura Beauty' туториал"</li>
+                        <li>"DIY декор для дома своими руками"</li>
+                    </ul>
+                    <div class="mt-6">
+                        <input type="text" placeholder="Уточните тему (например, 'путешествия')" class="content-idea-input w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 mb-3 text-gray-700 bg-gray-50">
+                        <button class="generate-ideas-btn text-white font-bold py-2 px-5 rounded-lg shadow-md transition duration-300 transform hover:scale-105" data-category="Стиль Жизни и Хобби">Генератор идей для контента ✨</button>
+                        <div class="ideas-output hidden"></div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="chart" class="content-section">
+                <h2 class="text-3xl md:text-4xl font-bold mb-6 text-gray-900 border-b-2 section-heading-border pb-4 text-center">
+                    Иллюстративное Распределение Интереса по Категориям
+                </h2>
+                <p class="text-lg text-gray-700 leading-relaxed text-center max-w-3xl mx-auto mb-8">
+                    Эта диаграмма представляет собой гипотетическое распределение общего интереса пользователей по основным категориям поисковых запросов в 2025 году. Она предназначена для наглядной иллюстрации и не основана на точных статистических данных по объемам запросов.
+                </p>
+                <div class="chart-container bg-white">
+                    <canvas id="interestChart"></canvas>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-16 py-8 border-t border-gray-300 bg-white rounded-xl shadow-lg">
+            <p class="text-gray-600 text-lg">&copy; 2025 Обзор Трендов Поиска. Все права защищены.</p>
+            <p class="text-sm text-gray-500 mt-2">Поисковые тренды постоянно меняются. Этот обзор отражает текущие тенденции и прогнозы, используя возможности ИИ.</p>
+        </footer>
+    </div>
+
+    <script>
+        const navButtons = document.querySelectorAll('.nav-button');
+        const contentSections = document.querySelectorAll('.content-section');
+        let interestChartInstance = null;
+
+        // Set initial active state for the first section and nav button
+        document.addEventListener('DOMContentLoaded', () => {
+            const initialTargetId = 'general'; // Default active section
+            document.querySelector(`.nav-button[data-target="${initialTargetId}"]`).classList.add('active-nav');
+            document.getElementById(initialTargetId).classList.add('active');
+        });
+
+        navButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.dataset.target;
+
+                navButtons.forEach(btn => btn.classList.remove('active-nav'));
+                button.classList.add('active-nav');
+
+                contentSections.forEach(section => {
+                    if (section.id === targetId) {
+                        section.classList.add('active');
+                    } else {
+                        section.classList.remove('active');
+                    }
+                });
+
+                if (targetId === 'chart') {
+                    renderInterestChart();
+                }
+            });
+        });
+
+        async function generateSummary(trendTopic, outputElement) {
+            outputElement.classList.remove('hidden');
+            outputElement.innerHTML = '<div class="flex items-center justify-center text-blue-600"><div class="loading-spinner border-blue-500"></div><span class="ml-2">Загрузка изложения...</span></div>';
+
+            const prompt = `Сделай краткое изложение по теме: ${trendTopic}. Выдели ключевые моменты в 2-3 предложениях.`;
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Ваша API-ключ Gemini
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    outputElement.innerHTML = `<p>${text}</p>`;
+                } else {
+                    outputElement.innerHTML = '<p class="text-red-600">Не удалось получить изложение. Возможно, произошла ошибка API или сеть недоступна. Попробуйте еще раз.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching summary:', error);
+                outputElement.innerHTML = '<p class="text-red-600">Произошла ошибка при получении изложения. Пожалуйста, проверьте подключение к интернету или попробуйте позднее.</p>';
+            }
+        }
+
+        document.querySelectorAll('.generate-summary-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const trendTopic = event.target.dataset.trend;
+                const outputElement = event.target.nextElementSibling;
+                generateSummary(trendTopic, outputElement);
+            });
+        });
+
+        async function generateContentIdeas(category, subTopic, outputElement) {
+            outputElement.classList.remove('hidden');
+            outputElement.innerHTML = '<div class="flex items-center justify-center text-green-600"><div class="loading-spinner border-green-500"></div><span class="ml-2">Генерация идей...</span></div>';
+
+            const topicForPrompt = subTopic ? `${category} и подтеме "${subTopic}"` : category;
+            const prompt = `Предложи 5 уникальных идей для контента или ключевых слов по теме "${topicForPrompt}". Форматируй как нумерованный список.`;
+            let chatHistory = [];
+            chatHistory.push({ role: "user", parts: [{ text: prompt }] });
+            const payload = { contents: chatHistory };
+            const apiKey = ""; // Ваша API-ключ Gemini
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+            try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    const text = result.candidates[0].content.parts[0].text;
+                    outputElement.innerHTML = `<p>${text.replace(/\n/g, '<br>')}</p>`;
+                } else {
+                    outputElement.innerHTML = '<p class="text-red-600">Не удалось сгенерировать идеи. Возможно, произошла ошибка API или сеть недоступна. Попробуйте еще раз.</p>';
+                }
+            } catch (error) {
+                console.error('Error fetching content ideas:', error);
+                outputElement.innerHTML = '<p class="text-red-600">Произошла ошибка при генерации идей. Пожалуйста, проверьте подключение к интернету или попробуйте позднее.</p>';
+            }
+        }
+
+        document.querySelectorAll('.generate-ideas-btn').forEach(button => {
+            button.addEventListener('click', (event) => {
+                const category = event.target.dataset.category;
+                const inputElement = event.target.previousElementSibling;
+                const subTopic = inputElement.value.trim();
+                const outputElement = event.target.nextElementSibling;
+                generateContentIdeas(category, subTopic, outputElement);
+            });
+        });
+
+        function renderInterestChart() {
+            if (interestChartInstance) {
+                interestChartInstance.destroy();
+            }
+            const ctx = document.getElementById('interestChart').getContext('2d');
+            interestChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Технологии и ИИ', 'Новости и Общество', 'Развлечения', 'Стиль Жизни', 'Здоровье', 'Экология'],
+                    datasets: [{
+                        label: 'Гипотетический Уровень Интереса (%)',
+                        data: [30, 20, 18, 15, 12, 5],
+                        backgroundColor: [
+                            'rgba(79, 138, 139, 0.7)', /* Accent teal */
+                            'rgba(249, 115, 22, 0.7)',  /* Orange */
+                            'rgba(107, 191, 94, 0.7)',   /* Green */
+                            'rgba(168, 85, 247, 0.7)',  /* Purple */
+                            'rgba(239, 68, 68, 0.7)',   /* Red */
+                            'rgba(6, 182, 212, 0.7)'    /* Cyan */
+                        ],
+                        borderColor: [
+                            'rgba(79, 138, 139, 1)',
+                            'rgba(249, 115, 22, 1)',
+                            'rgba(107, 191, 94, 1)',
+                            'rgba(168, 85, 247, 1)',
+                            'rgba(239, 68, 68, 1)',
+                            'rgba(6, 182, 212, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + "%"
+                                },
+                                color: '#4A5568' /* Darker tick color */
+                            },
+                            grid: {
+                                color: '#E2E8F0' /* Lighter grid lines */
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                callback: function(value) {
+                                    const label = this.getLabelForValue(value);
+                                    if (label.length > 16) {
+                                        return label.substring(0, 15) + '...';
+                                    }
+                                    return label;
+                                },
+                                color: '#4A5568' /* Darker tick color */
+                            },
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top',
+                            labels: {
+                                color: '#2D3748' /* Legend label color */
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y + '%';
+                                    }
+                                    return label;
+                                }
+                            },
+                            backgroundColor: 'rgba(45, 55, 72, 0.9)', /* Darker tooltip background */
+                            titleColor: '#F7FAFC',
+                            bodyColor: '#F7FAFC',
+                            borderColor: '#CBD5E0',
+                            borderWidth: 1
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>
